@@ -196,9 +196,9 @@ output_errors = np.zeros(shape=output_layer_size)
 input_neurons[0] = 1.0
 hidden_neurons[0] = 1.0
 
-# Tweakable terms
-learning_rate = 0.45
+# Other features
 momentum = 0.9
+pixels_per_pattern = {'width': 5, 'height': 7}
 
 
 def print_training():
@@ -208,7 +208,6 @@ def print_training():
 
     count = 0
     keys = list(training_set.keys())
-    pixels_per_pattern = {'width': 5, 'height': 7}
     char_height = pixels_per_pattern['height']
     char_width = pixels_per_pattern['width']
     number_to_print_per_row = 3
@@ -277,7 +276,6 @@ def adjust():
     for i in range(1, hidden_layer_size):
         for j in range(0, output_layer_size):
             hidden_output_weights_delta[i][j] = (
-                learning_rate *
                 output_errors[j] *
                 hidden_neurons[i] +
                 (momentum * hidden_output_weights_delta[i][j]))
@@ -289,7 +287,6 @@ def adjust():
     for i in range(1, input_layer_size):
         for j in range(1, hidden_layer_size):
             input_hidden_weights_delta[i][j] = (
-                learning_rate *
                 hidden_errors[j] *
                 input_neurons[i] +
                 (momentum * input_hidden_weights_delta[i][j]))

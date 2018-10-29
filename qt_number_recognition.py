@@ -6,6 +6,7 @@
 import sys
 import number_recognition as nr
 from itertools import cycle
+from functools import partial
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel,
                              QGridLayout, QVBoxLayout, QHBoxLayout,
@@ -92,11 +93,14 @@ class QtNumberRecognition(QWidget):
         input_layout.setSpacing(0)
         hidden_layout.setSpacing(0)
         output_layout.setSpacing(0)
+        count = 0
         for y in range(0, nr.pixels_per_pattern["height"]):
             for x in range(0, nr.pixels_per_pattern["width"]):
                 but = QPushButton('')
                 self.input.append(but)
                 input_layout.addWidget(but, y, x)
+                but.clicked.connect(partial(self.flip, count))
+                count += 1
         for y in range(1, nr.hidden_layer_size):
             bar = activation_indicator(10)
             hidden_layout.addWidget(bar, y, 0)
@@ -125,13 +129,22 @@ class QtNumberRecognition(QWidget):
                 self.history_output[x].append(bar)
         self.outputGroupBox.setLayout(layout)
 
-    def present(self, item):
-        nr.present(item)
+    def flip(self, count):
+        nr.input_neurons[count + 1] = (
+            1 if nr.input_neurons[count + 1] == 0 else 0)
+        self.set_input_grid()
+        self.propergate()
+
+    def set_input_grid(self):
         for inx in range(0, len(self.input)):
             if nr.input_neurons[inx + 1] == 1:
                 self.input[inx].setStyleSheet("background-color: grey")
             else:
                 self.input[inx].setStyleSheet("")
+
+    def present(self, item):
+        nr.present(item)
+        self.set_input_grid()
 
     def propergate(self):
         nr.propergate()
