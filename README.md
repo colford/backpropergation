@@ -66,5 +66,19 @@ enter [y|Y] to end.
 
 To run use python 3 and type:
 ```
-> python number-recognition.py
+> python number_recognition.py
 ```
+
+There is also a Qt version that can be invoked with:
+```
+> python qt_number_recognition.py
+```
+This will display the following:
+
+![Alt text](images/qt_number_recognition.png?raw=true "Qt Number Recognition")
+
+Each press of the "Run learning iteration" will present the next number in the cycle and propergate the data through the hidden and output layers. It will then work out the errors and backpropergate those by adjusting the weights (connections) between neurons. You can see the level of activation for the given current input in the hidden layer and output layer by the level of Red in the neuron i.e. more red more activation, ranging from 0 - 1. The display at the bottom shows the history of activation for the presented numbers i.e. last time it was presented we had these activations in the output layer. You can see from above that 6 and 8 are still in progress of finding unique features where as the rest are pretty well learnt. 
+
+One last feature is that you can interactively turn on/off "pixels" and instantly see the effect on the hidden and output layers. Once you have taught the network you can see how much noise you can introduce before the activation of that number changes to something else. You can test to see which features in the input the network is picking up upon.
+
+Enjoy! :)
